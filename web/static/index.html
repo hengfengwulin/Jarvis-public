@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,28 +8,28 @@
 </head>
 <body>
   <aside class="rail">
-    <div class="brand"><span class="mark">J</span><div><strong>Jarvis</strong><small>Developer Preview · local only</small></div></div>
-    <nav aria-label="Workspace">
-      <button class="nav active" data-view="today">Today</button>
-      <button class="nav" data-view="war-room">Project War Room</button>
-      <button class="nav" data-view="retrieval">Knowledge search</button>
-      <button class="nav" data-view="settings">Privacy & adapters</button>
+    <div class="brand"><span class="mark">J</span><div><strong>Jarvis</strong><small>开发者预览版 · 仅限本机</small></div></div>
+    <nav aria-label="工作空间">
+      <button class="nav active" data-view="today">今日</button>
+      <button class="nav" data-view="war-room">项目作战室</button>
+      <button class="nav" data-view="retrieval">知识搜索</button>
+      <button class="nav" data-view="settings">隐私与适配器</button>
     </nav>
-    <div class="boundary"><span class="dot"></span>Developer Preview · local-first</div>
+    <div class="boundary"><span class="dot"></span>开发者预览版 · 本地优先</div>
   </aside>
   <main>
-    <header><div><p class="eyebrow">PRIVATE-BY-DESIGN WORKSPACE</p><h1 id="page-title">Today</h1></div><span id="health" class="pill">Starting locally…</span></header>
+    <header><div><p class="eyebrow">隐私优先的工作空间</p><h1 id="page-title">今日</h1></div><span id="health" class="pill">正在启动本地工作空间…</span></header>
     <section id="today" class="view active">
-      <div class="hero"><div><p class="eyebrow">FOCUS</p><h2>Choose the action that most reduces delivery risk.</h2><p>Jarvis starts offline, keeps your data in an external Vault, and asks before any provider or activity adapter is enabled.</p></div><button class="primary" data-view="war-room">Open War Room</button></div>
-      <div class="demo-callout"><div><strong>Try a synthetic workspace</strong><p>Explicit opt-in only. This adds a fictional project to a fresh local Vault and never replaces existing data.</p><small id="demo-feedback" aria-live="polite">No demo data has been created.</small></div><button id="initialize-demo">Load synthetic demo</button></div>
-      <div class="grid three"><article><span>1</span><h3>Review current work</h3><p>See unresolved tasks and decisions without mixing historical items into the active view.</p></article><article><span>2</span><h3>Capture deliberately</h3><p>Raw notes remain proposals until you explicitly approve and apply them.</p></article><article><span>3</span><h3>Keep evidence durable</h3><p>Reports are hashed locally and completion requires a real receipt.</p></article></div>
+      <div class="hero"><div><p class="eyebrow">专注当下</p><h2>选择最能降低交付风险的行动。</h2><p>Jarvis 默认离线启动，将数据保存在外部记忆库中，并在启用任何模型服务或活动适配器前征求你的同意。</p></div><button class="primary" data-view="war-room">打开作战室</button></div>
+      <div class="demo-callout"><div><strong>体验模拟工作空间</strong><p>仅在你明确同意后启用。此操作会向全新的本地记忆库添加一个虚构项目，绝不会替换已有数据。</p><small id="demo-feedback" aria-live="polite">尚未创建演示数据。</small></div><button id="initialize-demo">加载模拟演示</button></div>
+      <div class="grid three"><article><span>1</span><h3>查看当前工作</h3><p>集中查看尚未解决的任务与决策，不让历史事项干扰当前工作。</p></article><article><span>2</span><h3>有意识地记录</h3><p>原始笔记仅作为提案保留，直到你明确批准并应用。</p></article><article><span>3</span><h3>留存可靠凭证</h3><p>报告在本地生成哈希校验值，完成工作必须有真实回执。</p></article></div>
     </section>
     <section id="war-room" class="view">
-      <div class="section-head"><div><p class="eyebrow">CANONICAL CONTROL PLANE</p><h2>Project War Room</h2></div><button id="refresh-room">Refresh</button></div>
-      <div class="grid two"><article><h3>Current unresolved</h3><div id="current-list" class="empty">No current work yet. Add a synthetic project or reconcile a local manifest.</div></article><article><h3>Timeline</h3><div id="timeline-list" class="empty">Resolved and superseded work appears here.</div></article></div>
+      <div class="section-head"><div><p class="eyebrow">统一控制中心</p><h2>项目作战室</h2></div><button id="refresh-room">刷新</button></div>
+      <div class="grid two"><article><h3>当前待解决</h3><div id="current-list" class="empty">暂无当前工作。请添加模拟项目或同步本地清单。</div></article><article><h3>时间线</h3><div id="timeline-list" class="empty">已解决或已被替代的工作会显示在这里。</div></article></div>
     </section>
-    <section id="retrieval" class="view"><p class="eyebrow">SCAR · BM25 · VECTOR · RRF</p><h2>Knowledge search</h2><p class="lead">Index your own Vault locally. An empty index returns a controlled empty result and never requires a provider key.</p><div class="search"><input aria-label="Search query" placeholder="Search your local knowledge"><button>Search locally</button></div></section>
-    <section id="settings" class="view"><p class="eyebrow">EXPLICIT OPT-IN</p><h2>Privacy & adapters</h2><div id="adapter-grid" class="grid three"><article><h3>Activity metadata</h3><p>Disabled by default. When enabled, only aggregate domains, counts, and time buckets are retained.</p></article><article><h3>Model provider</h3><p>Disabled until you supply an endpoint, model, and key through local configuration.</p></article><article><h3>Codex integration</h3><p>Optional adapter. Missing binary or state produces an unavailable status, never a broken app.</p></article></div></section>
+    <section id="retrieval" class="view"><p class="eyebrow">SCAR · BM25 · 向量检索 · RRF</p><h2>知识搜索</h2><p class="lead">在本地为你的记忆库建立索引。索引为空时会安全地返回空结果，无需模型服务密钥。</p><div class="search"><input aria-label="搜索内容" placeholder="搜索本地知识"><button>本地搜索</button></div></section>
+    <section id="settings" class="view"><p class="eyebrow">明确同意后启用</p><h2>隐私与适配器</h2><div id="adapter-grid" class="grid three"><article><h3>活动元数据</h3><p>默认关闭。启用后仅保留汇总的域名、次数和时间段信息。</p></article><article><h3>模型服务</h3><p>默认关闭，需在本地配置中提供服务地址、模型和密钥后才能启用。</p></article><article><h3>Codex 集成</h3><p>可选适配器。缺少可执行文件或状态数据时仅显示不可用，不会影响应用运行。</p></article></div></section>
   </main>
   <script type="module" src="/app.js"></script>
 </body>
