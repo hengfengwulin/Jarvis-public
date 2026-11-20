@@ -3,6 +3,7 @@ import { cp, mkdir, rename, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 app.setName('Jarvis');
+app.commandLine.appendSwitch('lang', 'zh-CN');
 let window;
 let uiServer;
 let quitting = false;
