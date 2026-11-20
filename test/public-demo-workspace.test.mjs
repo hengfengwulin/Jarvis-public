@@ -21,7 +21,7 @@ test('demo initialization is explicit, synthetic, external and idempotent', asyn
     const room = readWarRoom(cfg, 'demo-studio');
     assert.equal(room.projects[0].name, 'Sample Studio');
     assert.ok(room.current.some((item) => item.summary === 'Prepare the preview walkthrough'));
-    assert.ok(room.timeline.some((item) => item.summary === '仅使用本地示例数据'));
+    assert.ok(room.timeline.some((item) => item.summary === 'Use local-only sample data'));
     assert.match(await readFile(join(cfg.memoryDir, 'core', 'projects', 'sample-studio.md'), 'utf8'), /Synthetic demo only/);
     const second = await initializeDemoWorkspace(cfg, { confirmSynthetic: true });
     assert.equal(second.alreadyInitialized, true);

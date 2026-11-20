@@ -23,7 +23,7 @@ try {
   const page = await desktop.firstWindow({ timeout: 20000 });
   await page.waitForLoadState('networkidle');
   const text = await page.locator('body').innerText();
-  if (text.length < 300 || !text.includes('Jarvis') || !text.includes('今日')) throw new Error('Desktop first screen is blank or incomplete.');
+  if (text.length < 300 || !text.includes('Jarvis') || !text.includes('Today')) throw new Error('Desktop first screen is blank or incomplete.');
   await page.locator('#initialize-demo').click();
   await page.locator('#war-room h2').waitFor({ state: 'visible' });
   await page.getByText('Prepare the preview walkthrough').waitFor({ state: 'visible' });
