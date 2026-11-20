@@ -1,4 +1,5 @@
 import { createServer } from 'node:http';
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,12 +12,20 @@ const WEB_ROOT = fileURLToPath(new URL('../../web/static/', import.meta.url));
 const STATIC = new Map([['/', 'index.html'], ['/app.js', 'app.js'], ['/styles.css', 'styles.css']]);
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8' };
 
+const MAX_QUERY_LENGTH = 500;
+const SNIPPET_LENGTH = 240;
+
+async function searchVault(query) {
+  const { search } = await import('./vector-store.mjs');
+  return search(query);
+}
+
 function sendJson(response, status, value) {
   response.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' });
   response.end(JSON.stringify(value));
 }
 
-export function createUiServer({ config }) {
+export function createUiServer({ config, search = searchVault }) {
   let server;
   const token = randomBytes(32).toString('hex');
   const authorized = (request) => {
@@ -54,6 +63,23 @@ export function createUiServer({ config }) {
             const origin = request.headers.origin;
             if (!authorized(request) || (origin && origin !== api.url)) return sendJson(response, 403, { error: 'local_api_forbidden' });
             return sendJson(response, 200, readWarRoom(config, url.searchParams.get('project') || ''));
+          }
+          if (url.pathname === '/api/search') {
+            const origin = request.headers.origin;
+            if (!authorized(request) || (origin && origin !== api.url)) return sendJson(response, 403, { error: 'local_api_forbidden' });
+            const query = String(url.searchParams.get('q') || '').trim();
+            if (!query || query.length > MAX_QUERY_LENGTH) return sendJson(response, 400, { error: 'invalid_query' });
+            if (!config.vectorDbDir || !existsSync(config.vectorDbDir)) return sendJson(response, 200, { query, results: [], status: 'empty_index' });
+            try {
+              const results = (await search(query)).map((result) => ({
+                source: result.source || '',
+                date: result.date || '',
+                snippet: String(result.content || '').replace(/\s+/g, ' ').trim().slice(0, SNIPPET_LENGTH),
+              }));
+              return sendJson(response, 200, { query, results, status: results.length ? 'ok' : 'no_matches' });
+            } catch {
+              return sendJson(response, 503, { error: 'search_unavailable', guidance: 'Local search is unavailable. Restart the local workspace and try again.' });
+            }
           }
           if (url.pathname === '/api/demo/status') {
             if (!authorized(request)) return sendJson(response, 403, { error: 'local_api_forbidden' });

@@ -62,7 +62,60 @@ async function initializeDemo() {
   } finally { button.disabled = false; }
 }
 
+async function loadDemoStatus() {
+  try {
+    const response = await fetch('/api/demo/status', { headers: { 'x-jarvis-token': token } });
+    if (!response.ok) return;
+    const demo = await response.json();
+    if (demo.initialized) document.querySelector('#demo-feedback').textContent = 'Synthetic demo is already ready.';
+  } catch {}
+}
+
+const searchBox = document.querySelector('#retrieval .search');
+const searchInput = searchBox.querySelector('input');
+const searchButton = searchBox.querySelector('button');
+const searchResults = document.createElement('div');
+searchResults.id = 'search-results';
+searchResults.setAttribute('aria-live', 'polite');
+searchBox.after(searchResults);
+
+function renderSearchMessage(message) {
+  searchResults.className = 'empty';
+  searchResults.textContent = message;
+}
+
+async function runSearch() {
+  const query = searchInput.value.trim();
+  if (!query) { renderSearchMessage('Enter a query to search your local knowledge.'); return; }
+  searchButton.disabled = true;
+  renderSearchMessage('Searching locally…');
+  try {
+    const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`, { headers: { 'x-jarvis-token': token } });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.guidance || 'Local search is unavailable.');
+    if (result.status === 'empty_index') { renderSearchMessage('Your local index is empty. Index your Vault, then search again.'); return; }
+    if (!result.results.length) { renderSearchMessage('No matches in your local index.'); return; }
+    searchResults.className = 'items';
+    searchResults.textContent = '';
+    for (const item of result.results) {
+      const row = document.createElement('div');
+      row.className = 'item result';
+      const source = document.createElement('strong');
+      source.textContent = item.source || 'Local note';
+      const snippet = document.createElement('p');
+      snippet.textContent = item.snippet;
+      row.append(source, snippet);
+      searchResults.append(row);
+    }
+  } catch (error) {
+    renderSearchMessage(error.message || 'Local search is unavailable.');
+  } finally { searchButton.disabled = false; }
+}
+
 nav.forEach((button) => button.addEventListener('click', () => show(button.dataset.view)));
+searchButton.addEventListener('click', runSearch);
+searchInput.addEventListener('keydown', (event) => { if (event.key === 'Enter') runSearch(); });
 document.querySelector('#refresh-room').addEventListener('click', loadWarRoom);
 document.querySelector('#initialize-demo').addEventListener('click', initializeDemo);
 loadStatus();
+loadDemoStatus();
