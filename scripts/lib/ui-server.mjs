@@ -39,7 +39,7 @@ export function createUiServer({ config }) {
             try {
               return sendJson(response, 200, await initializeDemoWorkspace(config, { confirmSynthetic: true }));
             } catch (error) {
-              if (/not empty/i.test(error.message)) return sendJson(response, 409, { error: 'demo_target_not_empty', guidance: '请为模拟演示选择全新的 Jarvis 数据目录。已有记忆库和控制状态未被更改。' });
+              if (/not empty/i.test(error.message)) return sendJson(response, 409, { error: 'demo_target_not_empty', guidance: 'Choose a fresh Jarvis home for the synthetic demo. Existing Vault and control state were not changed.' });
               throw error;
             }
           }
@@ -65,7 +65,7 @@ export function createUiServer({ config }) {
           response.writeHead(200, { 'content-type': TYPES[extname(file)] || 'application/octet-stream', 'content-security-policy': "default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'" });
           response.end(body);
         } catch (error) {
-          sendJson(response, 500, { error: 'local_service_unavailable', guidance: '请重新启动本地工作空间。' });
+          sendJson(response, 500, { error: 'local_service_unavailable', guidance: 'Restart the local workspace.' });
         }
       });
       await new Promise((resolvePromise, reject) => { server.once('error', reject); server.listen(port, host, resolvePromise); });

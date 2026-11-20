@@ -99,8 +99,8 @@ async function initializeDemoWorkspaceOnce(config, now) {
       db.prepare('INSERT INTO role_assignments(source_key,project_id,role_id,assignee_id,status,payload_json,updated_at) VALUES(?,?,?,?,?,?,?)').run('demo:owner', DEMO_PROJECT, 'demo-owner', 'sample-owner', 'active', JSON.stringify(role), timestamp);
       const events = [
         { key: 'demo:task:walkthrough', taskId: 'demo-walkthrough', type: 'task', status: 'active', lifecycle: 'current', summary: 'Prepare the preview walkthrough' },
-        { key: 'demo:task:privacy', taskId: 'demo-privacy', type: 'task', status: 'active', lifecycle: 'current', summary: '核对隐私检查清单' },
-        { key: 'demo:decision:local', taskId: null, type: 'decision', status: 'resolved', lifecycle: 'resolved', summary: '仅使用本地示例数据' },
+        { key: 'demo:task:privacy', taskId: 'demo-privacy', type: 'task', status: 'active', lifecycle: 'current', summary: 'Verify the privacy checklist' },
+        { key: 'demo:decision:local', taskId: null, type: 'decision', status: 'resolved', lifecycle: 'resolved', summary: 'Use local-only sample data' },
       ];
       for (const event of events) {
         const payload = { eventId: event.key, projectId: DEMO_PROJECT, taskId: event.taskId, type: event.type, status: event.status, summary: event.summary, synthetic: true };
